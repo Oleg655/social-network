@@ -1,13 +1,21 @@
 import React from 'react';
 import logo from './logo.svg';
-import './App.css';
+import style from './App.module.scss'
 import Header from './header/Header';
+import Navbar from './navbar/Navbar';
+import Homepage from './homepage/Homepage';
 
 function App() {
   return (
-    <div className="App">
+    <div>
       
-    <Header/>
+        <Header/>
+      <div className={style.container}>
+        <Navbar/>
+        <Homepage/>
+      </div>
+      
+    
 
     </div>
   );
