@@ -4,6 +4,7 @@ import style from './App.module.scss'
 import Header from './header/Header';
 import Navbar from './navbar/Navbar';
 import Homepage from './homepage/Homepage';
+import Users from './homepage/users/Users';
 
 function App() {
   return (
@@ -13,8 +14,7 @@ function App() {
       <div className={style.container}>
         <Navbar/>
         <Homepage/>
-      </div>
-      
+      </div>      
     
 
     </div>
