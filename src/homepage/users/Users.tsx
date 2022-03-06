@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import userPhoto from "../../common/userphoto.png";
 import style from "./Users.module.scss";
@@ -22,7 +22,6 @@ function Users(props: any) {
   const [actualPage, setActualPage] = useState<number>(1);
 
   const sizeOfPage = 10;
-  const pageNumberLimit = 10;
 
   useEffect(() => {
     axios
@@ -43,8 +42,11 @@ function Users(props: any) {
     pages.push(i);
   }
 
+  const pageNumberLimit = 10;
   const [maxPageNumberLimit, setMaxPageNumberLimit] = useState<number>(10);
   const [minPageNumberLimit, setMinPageNumberLimit] = useState<number>(0);
+
+  const [number, setNumber] = useState<number>(0);
 
   const renderPageNumbers = pages.map((p) => {
     if (p < maxPageNumberLimit + 1 && p > minPageNumberLimit) {
@@ -63,6 +65,7 @@ function Users(props: any) {
 
   const setActualPageHandler = (p: number) => {
     setActualPage(p);
+
     axios
       .get(
         `https://social-network.samuraijs.com/api/1.0/users?page=${p}&count=${sizeOfPage}`
@@ -71,8 +74,6 @@ function Users(props: any) {
         setUsers(response.data.items);
       });
   };
-
- 
 
   const handleNextBtn = () => {
     setActualPageHandler(actualPage + 1);
@@ -94,12 +95,12 @@ function Users(props: any) {
 
   let pageIncrementBtn = null;
   if (pages.length > maxPageNumberLimit) {
-    pageIncrementBtn = <button  onClick={handleNextBtn}> &hellip; </button>;
+    pageIncrementBtn = <button onClick={handleNextBtn}> &hellip; </button>;
   }
 
   let pageDecrementBtn = null;
   if (minPageNumberLimit >= 1) {
-    pageDecrementBtn = <button  onClick={handlePrevBtn}> &hellip; </button>;
+    pageDecrementBtn = <button onClick={handlePrevBtn}> &hellip; </button>;
   }
 
   return (
@@ -120,6 +121,41 @@ function Users(props: any) {
         >
           Next
         </button>
+        <input
+          onChange={(e: ChangeEvent<HTMLInputElement>) => {
+            let number = +e.currentTarget.value;
+            setActualPageHandler(number);
+
+            setMinPageNumberLimit(0);
+            setMaxPageNumberLimit(10);
+
+            if (number > 10) {
+              const n = parseInt(number.toString().charAt(0) + "1");
+
+              setMinPageNumberLimit(n - 1);
+              setMaxPageNumberLimit(n + 9);
+            }if(number >= 100){
+              const n = parseInt(number.toString().charAt(0) + number.toString().charAt(1) + '1');
+              setMinPageNumberLimit(n - 1);
+              setMaxPageNumberLimit(n + 9);
+            }if(number >= 1000){
+              const n = parseInt(number.toString().charAt(0) + number.toString().charAt(1) + number.toString().charAt(2) + '1');
+              setMinPageNumberLimit(n - 1);
+              setMaxPageNumberLimit(n + 9);
+            }
+
+            // //
+            // let num = 48
+            // set1(num.charAr()+ 0 50 +1 )
+            // set2(50 + 10)
+            // 56
+            // 1 = 5
+            // 51
+            // 50+10=60
+          }}
+          placeholder="Enter number of page"
+          type="number"
+        />
       </div>
 
       <div>
