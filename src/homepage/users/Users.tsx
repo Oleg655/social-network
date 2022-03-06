@@ -76,6 +76,7 @@ function Users(props: any) {
   };
 
   const handleNextBtn = () => {
+    // кнопки вперед - назад
     setActualPageHandler(actualPage + 1);
 
     if (actualPage + 1 > maxPageNumberLimit) {
@@ -85,6 +86,7 @@ function Users(props: any) {
   };
 
   const handlePrevBtn = () => {
+    // кнопки вперед - назад
     setActualPageHandler(actualPage - 1);
 
     if ((actualPage - 1) % pageNumberLimit === 0) {
@@ -102,6 +104,35 @@ function Users(props: any) {
   if (minPageNumberLimit >= 1) {
     pageDecrementBtn = <button onClick={handlePrevBtn}> &hellip; </button>;
   }
+
+  const parseIntFunction = (number: number) => { //для инпута
+    
+    setMinPageNumberLimit(0);
+    setMaxPageNumberLimit(10);
+
+    if (number > 10) {
+      const n = parseInt(number.toString().charAt(0) + "1");
+      setMinPageNumberLimit(n - 1);
+      setMaxPageNumberLimit(n + 9);
+    }
+    if (number > 100) {
+      const n = parseInt(
+        number.toString().charAt(0) + number.toString().charAt(1) + "1"
+      );
+      setMinPageNumberLimit(n - 1);
+      setMaxPageNumberLimit(n + 9);
+    }
+    if (number > 1000) {
+      const n = parseInt(
+        number.toString().charAt(0) +
+          number.toString().charAt(1) +
+          number.toString().charAt(2) +
+          "1"
+      );
+      setMinPageNumberLimit(n - 1);
+      setMaxPageNumberLimit(n + 9);
+    }
+  };
 
   return (
     <div>
@@ -126,32 +157,7 @@ function Users(props: any) {
             let number = +e.currentTarget.value;
             setActualPageHandler(number);
 
-            setMinPageNumberLimit(0);
-            setMaxPageNumberLimit(10);
-
-            if (number > 10) {
-              const n = parseInt(number.toString().charAt(0) + "1");
-
-              setMinPageNumberLimit(n - 1);
-              setMaxPageNumberLimit(n + 9);
-            }if(number >= 100){
-              const n = parseInt(number.toString().charAt(0) + number.toString().charAt(1) + '1');
-              setMinPageNumberLimit(n - 1);
-              setMaxPageNumberLimit(n + 9);
-            }if(number >= 1000){
-              const n = parseInt(number.toString().charAt(0) + number.toString().charAt(1) + number.toString().charAt(2) + '1');
-              setMinPageNumberLimit(n - 1);
-              setMaxPageNumberLimit(n + 9);
-            }
-
-            // //
-            // let num = 48
-            // set1(num.charAr()+ 0 50 +1 )
-            // set2(50 + 10)
-            // 56
-            // 1 = 5
-            // 51
-            // 50+10=60
+            parseIntFunction(number);
           }}
           placeholder="Enter number of page"
           type="number"
