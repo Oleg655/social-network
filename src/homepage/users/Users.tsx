@@ -20,9 +20,9 @@ function Users(props: any) {
   const [users, setUsers] = useState<UserT[]>([]);
   const [countOfUseres, setCountOfUsers] = useState<number>(0);
   const [actualPage, setActualPage] = useState<number>(1);
-  const [followed, setFollowed] = useState<boolean>(false);
 
   const sizeOfPage = 10;
+  const pageNumberLimit = 10;
 
   useEffect(() => {
     axios
@@ -37,14 +37,29 @@ function Users(props: any) {
 
   const sumOfPages = Math.ceil(countOfUseres / sizeOfPage);
 
-  const pages = [];
+  const pages: Array<number> = [];
 
   for (let i = 1; i <= sumOfPages; i++) {
-    if (pages.length < 10) {
-      pages.push(i);
-    }
-    //pages.push(i)
+    pages.push(i);
   }
+
+  const [maxPageNumberLimit, setMaxPageNumberLimit] = useState<number>(10);
+  const [minPageNumberLimit, setMinPageNumberLimit] = useState<number>(0);
+
+  const renderPageNumbers = pages.map((p) => {
+    if (p < maxPageNumberLimit + 1 && p > minPageNumberLimit) {
+      return (
+        <button
+          onClick={() => {
+            setActualPageHandler(p);
+          }}
+          key={p}
+        >
+          {p}
+        </button>
+      );
+    }
+  });
 
   const setActualPageHandler = (p: number) => {
     setActualPage(p);
@@ -57,21 +72,54 @@ function Users(props: any) {
       });
   };
 
+ 
+
+  const handleNextBtn = () => {
+    setActualPageHandler(actualPage + 1);
+
+    if (actualPage + 1 > maxPageNumberLimit) {
+      setMaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
+      setMinPageNumberLimit(minPageNumberLimit + pageNumberLimit);
+    }
+  };
+
+  const handlePrevBtn = () => {
+    setActualPageHandler(actualPage - 1);
+
+    if ((actualPage - 1) % pageNumberLimit === 0) {
+      setMaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit);
+      setMinPageNumberLimit(minPageNumberLimit - pageNumberLimit);
+    }
+  };
+
+  let pageIncrementBtn = null;
+  if (pages.length > maxPageNumberLimit) {
+    pageIncrementBtn = <button  onClick={handleNextBtn}> &hellip; </button>;
+  }
+
+  let pageDecrementBtn = null;
+  if (minPageNumberLimit >= 1) {
+    pageDecrementBtn = <button  onClick={handlePrevBtn}> &hellip; </button>;
+  }
+
   return (
     <div>
       <div>
-        {pages.map((p) => {
-          return (
-            <span
-              onClick={() => {
-                setActualPageHandler(p);
-              }}
-              key={p}
-            >
-              {p}
-            </span>
-          );
-        })}
+        <button
+          onClick={handlePrevBtn}
+          disabled={actualPage === pages[0] ? true : false}
+        >
+          Prev
+        </button>
+        {pageDecrementBtn}
+        {renderPageNumbers}
+        {pageIncrementBtn}
+        <button
+          onClick={handleNextBtn}
+          disabled={actualPage === pages[pages.length - 1] ? true : false}
+        >
+          Next
+        </button>
       </div>
 
       <div>
@@ -85,23 +133,7 @@ function Users(props: any) {
             </Link>
             <span>{i.name}</span>
             <div>
-              {i.followed ? (
-                <button
-                  onClick={() => {
-                    setFollowed(false);
-                  }}
-                >
-                  Unfollow
-                </button>
-              ) : (
-                <button
-                  onClick={() => {
-                    setFollowed(true);
-                  }}
-                >
-                  Follow
-                </button>
-              )}
+              {i.followed ? <button>Unfollow</button> : <button>Follow</button>}
             </div>
           </div>
         ))}
