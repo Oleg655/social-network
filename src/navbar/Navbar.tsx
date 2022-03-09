@@ -5,13 +5,12 @@ import style from "./Navbar.module.scss";
 function Navbar() {
   return (
     <div className={style.navbar}>
-      <Link to="/profile">My profile </Link>
-      <Link to="/messager">My messages </Link>
-      <Link to="/users">Users </Link>
-      <Link to="/music">My music </Link>
-      <Link to="/news">News </Link>
-
-      <Link to="">Settings</Link>
+      <Link className={style.navbarLinks} to="/profile">My profile </Link>
+      <Link className={style.navbarLinks} to="/messager">My messages </Link>
+      <Link className={style.navbarLinks} to="/users">Users </Link>
+      <Link className={style.navbarLinks} to="/music">My music </Link>
+      <Link className={style.navbarLinks} to="/news">News </Link>
+      <Link className={style.navbarLinks} to="">Settings</Link>
     </div>
   );
 }

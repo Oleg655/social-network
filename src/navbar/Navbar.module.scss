@@ -1,7 +1,6 @@
 .navbar{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: azure;
-    background-color: black;
+    .navbarLinks{
+        color: aliceblue;
+        text-decoration: none;
+    }
 }
