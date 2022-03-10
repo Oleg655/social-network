@@ -1,11 +1,18 @@
 import React from "react";
-import PorofileAvatar from '../../../common/post-avatar.png'
+import { PostType } from "./ProfilePosts";
+import style from "../../../common/Common.module.scss";
 
-const Post = (props: any) => {
+type PostPropsType = {
+    post: PostType
+}
+
+const Post = (props: PostPropsType) => {
     return(
         <div>
-            <img src={props.post.avatar}/>
-            <span>{props.post.message}</span>
+            
+    
+               <img className={style.userPhoto} src={props.post.avatar} />
+               <span>{props.post.message}</span>
 
         </div>
     )

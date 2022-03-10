@@ -17,7 +17,7 @@ function Homepage() {
         <Route path={"/messager"} element={<Messager />} />
         {/* <Route path={"/profile/:userId"} element={<Profile params={some.userId}/>} /> */}
         <Route path={"/users"} element={<Users />} />
-        <Route path={"/profile/"} element={<Profile />} />
+        <Route path={"/profile"} element={<Profile />} />
       </Routes>
     </div>
   );

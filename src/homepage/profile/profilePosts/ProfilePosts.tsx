@@ -1,32 +1,41 @@
 import React, { ChangeEvent, useState } from "react";
-import PorofileAvatar from "../../../common/post-avatar.png";
+import ProfileAvatar from "../../../common/post-avatar.png";
 import Post from "./Post";
 
+export type PostType = {
+  message: string;
+  avatar: string;
+};
+
 const ProfilePosts = () => {
-  const [message, setMessage] = useState<string>("");
-  const [post, setPost] = useState<{}>({});
+  const [message, setMessage] = useState<string>('');
+  const [post, setPost] = useState<PostType[]>([]);
 
   const onChangeMessage = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const newMessage = e.currentTarget.value;
     setMessage(newMessage);
   };
 
-  const addPost = (message: any) => {
-    setPost({
+  const addPost = () => {
+    setPost([...post, {
       message,
-      avatar: PorofileAvatar,
-    });
+      avatar: ProfileAvatar,
+    }]);
+    setMessage('')
   };
 
   return (
     <>
       <div>
-        <textarea onChange={onChangeMessage}></textarea>
+        <textarea value={message} onChange={onChangeMessage}></textarea>
         <button onClick={addPost}>Add post</button>
       </div>
 
       <div>
-        <Post post={post}/>
+        {post.map((el) => {
+            return <Post post={el} />
+        })}
+        
       </div>
     </>
   );

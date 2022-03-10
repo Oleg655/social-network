@@ -3,7 +3,7 @@ import React, { ChangeEvent, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import userPhoto from "../../common/userphoto.png";
 import Pagination from "../pagination/Pagination";
-import style from "./Users.module.scss";
+import style from "../../common/Common.module.scss";
 
 export type UserT = {
   id: number;
