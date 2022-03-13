@@ -9,11 +9,8 @@ type PostPropsType = {
 const Post = (props: PostPropsType) => {
     return(
         <div>
-            
-    
                <img className={style.userPhoto} src={props.post.avatar} />
                <span>{props.post.message}</span>
-
         </div>
     )
 }

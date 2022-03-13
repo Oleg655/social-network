@@ -22,14 +22,20 @@ function Users() {
   const [countOfUseres, setCountOfUsers] = useState<number>(0);
   const [actualPage, setActualPage] = useState<number>(1);
 
+  const [loader, setLoader] = useState<boolean>(false);
+  
+
+
   const sizeOfPage = 10;
 
   useEffect(() => {
+    setLoader(true);
     axios
       .get(
         `https://social-network.samuraijs.com/api/1.0/users?page=${actualPage}&count=${sizeOfPage}`
       )
       .then((response) => {
+        setLoader(false);
         setUsers(response.data.items);
         setCountOfUsers(response.data.totalCount);
       });
@@ -37,18 +43,21 @@ function Users() {
 
   const setActualPageHandler = (p: number) => {
     setActualPage(p);
-
+    setLoader(true);
     axios
       .get(
         `https://social-network.samuraijs.com/api/1.0/users?page=${p}&count=${sizeOfPage}`
       )
       .then((response) => {
+        setLoader(false);
         setUsers(response.data.items);
       });
   };
 
   return (
     <div>
+      {loader === true ? "loading" : null}
+
       <Pagination
         actualPage={actualPage}
         countOfUseres={countOfUseres}
@@ -66,7 +75,7 @@ function Users() {
             </Link>
             <span>{i.name}</span>
             <div>
-              {i.followed ? <button>Unfollow</button> : <button>Follow</button>}
+              {i.followed ? <button>Unfollow</button> : <button onClick={}>Follow</button>}
             </div>
           </div>
         ))}
