@@ -3,7 +3,7 @@ import { Route, Routes, useParams } from "react-router-dom";
 import style from "./Homepage.module.scss";
 import Messager from "./messager/Messager";
 import Profile from "./profile/Profile";
-import Users from "./users/Users";
+import UsersContainer from "./users/UsersContainer";
 
 function Homepage() {
 
@@ -16,7 +16,7 @@ function Homepage() {
       <Routes>
         <Route path={"/messager"} element={<Messager />} />
         {/* <Route path={"/profile/:userId"} element={<Profile params={some.userId}/>} /> */}
-        <Route path={"/users"} element={<Users />} />
+        <Route path={"/users"} element={<UsersContainer />} />
         <Route path={"/profile"} element={<Profile />} />
       </Routes>
     </div>

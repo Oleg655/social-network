@@ -1,41 +1,35 @@
-import React, { ChangeEvent, useState } from "react";
-import ProfileAvatar from "../../../common/post-avatar.png";
-import Post from "./Post";
+import React, { ChangeEvent } from "react";
+import Post from "./post/Post";
 
 export type PostType = {
   message: string;
   avatar: string;
 };
 
-const ProfilePosts = () => {
-  const [message, setMessage] = useState<string>('');
-  const [post, setPost] = useState<PostType[]>([]);
+type ProfilePostsPropsType = {
+  message: string;
+  post: PostType[];
+  updatePostMessage: (text: string) => void;
+  addPost: () => void;
+};
 
-  const onChangeMessage = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    const newMessage = e.currentTarget.value;
-    setMessage(newMessage);
-  };
-
-  const addPost = () => {
-    setPost([...post, {
-      message,
-      avatar: ProfileAvatar,
-    }]);
-    setMessage('')
+const ProfilePosts = (props: ProfilePostsPropsType) => {
+  const onPostChange = () => (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const text = e.currentTarget.value;
+    props.updatePostMessage(text);
   };
 
   return (
     <>
       <div>
-        <textarea value={message} onChange={onChangeMessage}></textarea>
-        <button onClick={addPost}>Add post</button>
+        <textarea value={props.message} onChange={onPostChange}></textarea>
+        <button onClick={props.addPost}>Add post</button>
       </div>
 
       <div>
-        {post.map((el) => {
-            return <Post post={el} />
+        {props.post.map((el) => {
+          return <Post post={el} />;
         })}
-        
       </div>
     </>
   );

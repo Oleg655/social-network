@@ -1,6 +1,6 @@
 import React from "react";
-import { PostType } from "./ProfilePosts";
-import style from "../../../common/Common.module.scss";
+import style from "../../../../common/Common.module.scss";
+import { PostType } from "../ProfilePosts";
 
 type PostPropsType = {
     post: PostType

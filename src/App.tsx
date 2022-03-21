@@ -4,7 +4,7 @@ import style from "./App.module.scss";
 import Header from "./header/Header";
 import Navbar from "./navbar/Navbar";
 import Homepage from "./homepage/Homepage";
-import Users from "./homepage/users/Users";
+import Users from "./homepage/users/UsersAPI";
 
 function App() {
   return (

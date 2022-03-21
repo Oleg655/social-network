@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import ProfilePosts from "./profilePosts/ProfilePosts";
+import ProfilePostsContainer from "./profilePosts/ProfilePostsContainer";
 
 type AuthType = {
     id: number | null
@@ -25,18 +26,9 @@ function Profile(props: any) {
       });
   }, []);
 
-  // const [data, setData] = useState({})
-
-  // useEffect(() => {
-  //     axios.get('https://social-network.samuraijs.com/api/1.0/profile/' + props.params)
-  //         .then(response => {
-  //             setData(response.data)
-  //         })
-  // })
-
   return (
     <div>
-      <ProfilePosts />
+      <ProfilePostsContainer />
     </div>
   );
 }
