@@ -1,16 +1,6 @@
 import axios from "axios";
 import React from "react";
-import { connect } from "react-redux";
-import { AppStateType } from "../../redux/store";
-import {
-  follow,
-  setActualPage,
-  setCountOfUsers,
-  setLoader,
-  setUsers,
-  unFollow,
-  UserT,
-} from "../../redux/users-reducer";
+import { UserT } from "../../redux/users-reducer";
 import Users from "./Users";
 
 type UsersPropsType = {
@@ -25,7 +15,7 @@ type UsersPropsType = {
   setLoader: (loader: boolean) => void;
 };
 
-class UsersComponent extends React.Component<UsersPropsType> {
+class UsersAPIComponent extends React.Component<UsersPropsType> {
   componentDidMount() {
     this.props.setLoader(true);
     axios
@@ -54,9 +44,7 @@ class UsersComponent extends React.Component<UsersPropsType> {
           },
         }
       )
-      .then((response) => {
-        
-      });
+      .then(() => {});
   };
 
   buttonUnfollow = (id: number) => {
@@ -99,22 +87,4 @@ class UsersComponent extends React.Component<UsersPropsType> {
     );
   }
 }
-
-const mapStateToProps = (state: AppStateType) => {
-  return {
-    users: state.usersPage.users,
-    countOfUseres: state.usersPage.countOfUseres,
-    actualPage: state.usersPage.actualPage,
-    portionSize: state.usersPage.portionSize,
-    loader: state.usersPage.loader,
-  };
-};
-
-export default connect(mapStateToProps, {
-  setUsers,
-  setActualPage,
-  setCountOfUsers,
-  setLoader,
-  follow,
-  unFollow
-})(UsersComponent);
+export default UsersAPIComponent;

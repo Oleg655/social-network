@@ -1,8 +1,12 @@
 import React, { ChangeEvent } from "react";
 import { connect } from "react-redux";
-import {addPostAC, updatePostMessageAC } from "../../../redux/profile-reducer";
+import {addPost, updatePostMessage } from "../../../redux/profile-reducer";
 import { AppStateType } from "../../../redux/store";
 import ProfilePosts from "./ProfilePosts";
+
+type MapStatePropsType = {
+  
+}
 
 const mapStateToProps = (state: AppStateType) => {
   return {
@@ -11,20 +15,11 @@ const mapStateToProps = (state: AppStateType) => {
   };
 };
 
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    updatePostMessage: (text: string) => {
-      dispatch(updatePostMessageAC(text));
-    },
-    addPost: () => {
-      dispatch(addPostAC());
-    },
-  };
-};
+
 
 const ProfilePostsContainer = connect(
   mapStateToProps,
-  mapDispatchToProps
+  {updatePostMessage,addPost}
 )(ProfilePosts);
 
 export default ProfilePostsContainer;

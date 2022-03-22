@@ -6,7 +6,7 @@ import usersReducer from "./users-reducer";
 const rootReducer = combineReducers({
     profile: profileReducer,
     login: loginReducer,
-    users: usersReducer,
+    usersPage: usersReducer,
 })
 
 export type AppStateType = ReturnType<typeof rootReducer>
