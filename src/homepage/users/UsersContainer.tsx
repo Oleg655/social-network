@@ -2,7 +2,7 @@ import axios from "axios";
 import React from "react";
 import { connect } from "react-redux";
 import { AppStateType } from "../../redux/store";
-import {
+import ActionsCreators, {
   follow,
   setActualPage,
   setCountOfUsers,
@@ -23,6 +23,8 @@ type UsersPropsType = {
   setActualPage: (page: number) => void;
   setCountOfUsers: (usersCount: number) => void;
   setLoader: (loader: boolean) => void;
+  follow: (userId: number) => void;
+  unFollow: (userId: number) => void;
 };
 
 class UsersComponent extends React.Component<UsersPropsType> {
@@ -55,7 +57,9 @@ class UsersComponent extends React.Component<UsersPropsType> {
         }
       )
       .then((response) => {
-        
+        if (response.data.resultCode === 0) {
+          this.props.follow(id);
+        }
       });
   };
 
@@ -67,7 +71,11 @@ class UsersComponent extends React.Component<UsersPropsType> {
           "API-KEY": "a7566c79-aa05-48a1-9b2c-3618b68bf0c3",
         },
       })
-      .then(() => {});
+      .then((response) => {
+        if (response.data.resultCode === 0) {
+          this.props.unFollow(id);
+        }
+      });
   };
 
   setActualPageHandler = (p: number) => {
@@ -100,7 +108,28 @@ class UsersComponent extends React.Component<UsersPropsType> {
   }
 }
 
-const mapStateToProps = (state: AppStateType) => {
+type MapStatePropsType = {
+  users: UserT[];
+  countOfUseres: number;
+  actualPage: number;
+  portionSize: number;
+  loader: boolean;
+};
+
+type MapDispatchPropsType = {
+  setUsers: (uesrs: UserT[]) => void;
+  setActualPage: (page: number) => void;
+  setCountOfUsers: (usersCount: number) => void;
+  setLoader: (loader: boolean) => void;
+  follow: (uesrId: number) => void;
+  unFollow: (userId: number) => void;
+};
+
+type OwnPropsType = {};
+
+type PropsType = MapStatePropsType & MapDispatchPropsType & OwnPropsType;
+
+const mapStateToProps = (state: AppStateType): MapStatePropsType => {
   return {
     users: state.usersPage.users,
     countOfUseres: state.usersPage.countOfUseres,
@@ -110,11 +139,16 @@ const mapStateToProps = (state: AppStateType) => {
   };
 };
 
-export default connect(mapStateToProps, {
+export default connect<
+  MapStatePropsType,
+  MapDispatchPropsType,
+  OwnPropsType,
+  AppStateType
+>(mapStateToProps, {
   setUsers,
   setActualPage,
   setCountOfUsers,
   setLoader,
   follow,
-  unFollow
+  unFollow,
 })(UsersComponent);

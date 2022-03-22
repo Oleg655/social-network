@@ -1,9 +1,11 @@
+import { inferActionsType } from "./store";
+
 const SET_USERS = "SET_USERS";
 const SET_ACTUAL_PAGE = "SET_ACTUAL_PAGE";
 const SET_COUNT_OF_USERS = "SET_COUNT_OF_USERS";
 const SET_LOADER = "SET_LOADER";
-const FOLLOW = 'FOLLOW';
-const UNFOLLOW = 'UNFOLLOW'
+const FOLLOW = "FOLLOW";
+const UNFOLLOW = "UNFOLLOW";
 
 export type UserT = {
   id: number;
@@ -17,13 +19,12 @@ export type UserT = {
   uniqueUrlName?: string | null;
 };
 
-type initialStateType = {
+export type initialStateType = {
   users: UserT[];
   countOfUseres: number;
   actualPage: number;
   portionSize: number;
   loader: boolean;
-  follow: boolean
 };
 
 const initialState: initialStateType = {
@@ -32,50 +33,55 @@ const initialState: initialStateType = {
   actualPage: 1,
   portionSize: 10,
   loader: false,
-  follow: false
 };
 
-const usersReducer = (action: any, state = initialState):initialStateType => {
+const usersReducer = (
+  action: ActionsType,
+  state = initialState
+): initialStateType => {
   switch (action.type) {
     case SET_USERS: {
       return {
         ...state,
-        users: [...state.users, action.users]
-      }
+        users: [...action.users],
+      };
     }
     case SET_ACTUAL_PAGE: {
       return {
-        ...(state.actualPage = action.actualPage),
+        ...state,
+        actualPage: action.actualPage,
       };
     }
     case FOLLOW:
       return {
         ...state,
         users: state.users.map((u: UserT) => {
-            if(u.id === action.userId){
-              return{...u, followed: true}
-            }
-            return u
-        })
-      }
-      case UNFOLLOW:
+          if (u.id === action.userId) {
+            return { ...u, followed: true };
+          }
+          return u;
+        }),
+      };
+    case UNFOLLOW:
       return {
         ...state,
         users: state.users.map((u: UserT) => {
-            if(u.id === action.userId){
-              return{...u, followed: false}
-            }
-            return u
-        })
-      }
+          if (u.id === action.userId) {
+            return { ...u, followed: false };
+          }
+          return u;
+        }),
+      };
     case SET_COUNT_OF_USERS: {
       return {
-        ...(state.countOfUseres = action.usersCount),
+        ...state,
+        countOfUseres: action.usersCount,
       };
     }
     case SET_LOADER: {
       return {
-        ...(state.loader = action.loader),
+        ...state,
+        loader: action.loader,
       };
     }
     default:
@@ -85,26 +91,22 @@ const usersReducer = (action: any, state = initialState):initialStateType => {
 
 export default usersReducer;
 
-export const setUsers = (users: UserT[]) => {
-  return { type: SET_USERS, users };
-};
+type ActionsType =
+  | ReturnType<typeof setUsers>
+  | ReturnType<typeof follow>
+  | ReturnType<typeof unFollow>
+  | ReturnType<typeof setActualPage>
+  | ReturnType<typeof setCountOfUsers>
+  | ReturnType<typeof setLoader>;
 
-export const follow = (userId: number) => {
-  return { type: FOLLOW, userId };
-};
-
-export const unFollow = (userId: number) => {
-  return { type: UNFOLLOW, userId };
-};
-
-export const setActualPage = (actualPage: number) => {
-  return { type: SET_ACTUAL_PAGE, actualPage };
-};
-
-export const setCountOfUsers = (usersCount: number) => {
-  return { type: SET_COUNT_OF_USERS, usersCount };
-};
-
-export const setLoader = (loader: boolean) => {
-  return { type: SET_LOADER, loader };
-};
+export const setUsers = (users: UserT[]) =>
+  ({ type: SET_USERS, users } as const);
+export const follow = (userId: number) => ({ type: FOLLOW, userId } as const);
+export const unFollow = (userId: number) =>
+  ({ type: UNFOLLOW, userId } as const);
+export const setActualPage = (actualPage: number) =>
+  ({ type: SET_ACTUAL_PAGE, actualPage } as const);
+export const setCountOfUsers = (usersCount: number) =>
+  ({ type: SET_COUNT_OF_USERS, usersCount } as const);
+export const setLoader = (loader: boolean) =>
+  ({ type: SET_LOADER, loader } as const);

@@ -9,19 +9,18 @@ type initialStateType = {
   message: string;
 };
 
-type ActionsType = updatePostMessageType|addPostType
 
 const initialState: initialStateType = {
   post: [
     {
-      message: '',
-      avatar: '',
+      message: "",
+      avatar: "",
     },
   ],
-  message: '',
+  message: "",
 };
 
-const profileReducer = (action: ActionsType, state = initialState) => {
+const profileReducer = (action: any, state = initialState) => {
   switch (action.type) {
     case ADD_POST: {
       return [
@@ -42,13 +41,11 @@ const profileReducer = (action: ActionsType, state = initialState) => {
 
 export default profileReducer;
 
-type updatePostMessageType = ReturnType<typeof updatePostMessage>
-type addPostType = ReturnType<typeof addPost>
 
 export const updatePostMessage = (text: string) => {
-  return {type: UPDATE_MESSAGE, text }
-}
+  return { type: UPDATE_MESSAGE, text };
+};
 
 export const addPost = () => {
-  return {type: ADD_POST}
-}
+  return { type: ADD_POST };
+};

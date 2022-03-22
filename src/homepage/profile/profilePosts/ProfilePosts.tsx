@@ -8,7 +8,7 @@ export type PostType = {
 
 type ProfilePostsPropsType = {
   message: string;
-  post: PostType[];
+  posts: PostType[];
   updatePostMessage: (text: string) => void;
   addPost: () => void;
 };
@@ -27,7 +27,7 @@ const ProfilePosts = (props: ProfilePostsPropsType) => {
       </div>
 
       <div>
-        {props.post.map((el) => {
+        {props.posts.map((el) => {
           return <Post post={el} />;
         })}
       </div>
