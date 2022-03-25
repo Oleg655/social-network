@@ -4,7 +4,7 @@ import React from "react";
 type PaginationPropsType = {
   countOfUseres: number
   sizeOfPage: number
-  actualPage: number
+  page: number
   setActualPageHandler: (page: number) => void
 }
 
@@ -84,9 +84,9 @@ const Pagination = (props: PaginationPropsType) => {
 
   const handleNextBtn = () => {
     // кнопки вперед - назад
-    props.setActualPageHandler(props.actualPage + 1);
+    props.setActualPageHandler(props.page + 1);
 
-    if (props.actualPage + 1 > maxPageNumberLimit) {
+    if (props.page + 1 > maxPageNumberLimit) {
       setMaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
       setMinPageNumberLimit(minPageNumberLimit + pageNumberLimit);
     }
@@ -94,9 +94,9 @@ const Pagination = (props: PaginationPropsType) => {
 
   const handlePrevBtn = () => {
     // кнопки вперед - назад
-    props.setActualPageHandler(props.actualPage - 1);
+    props.setActualPageHandler(props.page - 1);
 
-    if ((props.actualPage - 1) % pageNumberLimit === 0) {
+    if ((props.page - 1) % pageNumberLimit === 0) {
       setMaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit);
       setMinPageNumberLimit(minPageNumberLimit - pageNumberLimit);
     }
@@ -116,7 +116,7 @@ const Pagination = (props: PaginationPropsType) => {
     <div>
       <button
         onClick={handlePrevBtn}
-        disabled={props.actualPage === pages[0] ? true : false}
+        disabled={props.page === pages[0] ? true : false}
       >
         Prev
       </button>
@@ -125,7 +125,7 @@ const Pagination = (props: PaginationPropsType) => {
       {pageIncrementBtn}
       <button
         onClick={handleNextBtn}
-        disabled={props.actualPage === pages[pages.length - 1] ? true : false}
+        disabled={props.page === pages[pages.length - 1] ? true : false}
       >
         Next
       </button>

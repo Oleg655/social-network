@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { AuthType } from "../header/Header";
 import style from "./Navbar.module.scss";
 
 type NavbarPropsType = {
-  auth: AuthType
+  isAuth: boolean
+  login: string
 }
 
 function Navbar(props: NavbarPropsType) {
@@ -16,7 +16,7 @@ function Navbar(props: NavbarPropsType) {
       <Link className={style.navbarLinks} to="/music">My music </Link>
       <Link className={style.navbarLinks} to="/news">News </Link>
       <Link className={style.navbarLinks} to="">Settings </Link>
-      {props.auth.isAuth ? props.auth.login : <Link className={style.navbarLinks} to="/login">Login</Link>}
+      {props.isAuth ? props.login : <Link className={style.navbarLinks} to="/login">Login</Link>}
       
     </div>
   );

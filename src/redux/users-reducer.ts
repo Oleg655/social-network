@@ -1,11 +1,5 @@
-import { inferActionsType } from "./store";
-
-const SET_USERS = "SET_USERS";
-const SET_ACTUAL_PAGE = "SET_ACTUAL_PAGE";
-const SET_COUNT_OF_USERS = "SET_COUNT_OF_USERS";
-const SET_LOADER = "SET_LOADER";
-const FOLLOW = "FOLLOW";
-const UNFOLLOW = "UNFOLLOW";
+import { Dispatch } from "react";
+import { usersAPI } from "../api/api";
 
 export type UserT = {
   id: number;
@@ -19,20 +13,15 @@ export type UserT = {
   uniqueUrlName?: string | null;
 };
 
-export type initialStateType = {
-  users: UserT[];
-  countOfUseres: number;
-  actualPage: number;
-  portionSize: number;
-  loader: boolean;
-};
+export type initialStateType = typeof initialState;
 
-const initialState: initialStateType = {
-  users: [],
+const initialState = {
+  users: [] as UserT[] | [],
   countOfUseres: 0,
-  actualPage: 1,
+  page: 1,
   portionSize: 10,
   loader: false,
+  isButtonDisabled: [] as Array<number>,
 };
 
 const usersReducer = (
@@ -40,19 +29,19 @@ const usersReducer = (
   state = initialState
 ): initialStateType => {
   switch (action.type) {
-    case SET_USERS: {
+    case "SET_USERS": {
       return {
         ...state,
         users: [...action.users],
       };
     }
-    case SET_ACTUAL_PAGE: {
+    case "SET_ACTUAL_PAGE": {
       return {
         ...state,
-        actualPage: action.actualPage,
+        page: action.actualPage,
       };
     }
-    case FOLLOW:
+    case "FOLLOW":
       return {
         ...state,
         users: state.users.map((u: UserT) => {
@@ -62,7 +51,7 @@ const usersReducer = (
           return u;
         }),
       };
-    case UNFOLLOW:
+    case "UNFOLLOW":
       return {
         ...state,
         users: state.users.map((u: UserT) => {
@@ -72,18 +61,25 @@ const usersReducer = (
           return u;
         }),
       };
-    case SET_COUNT_OF_USERS: {
+    case "SET_COUNT_OF_USERS": {
       return {
         ...state,
         countOfUseres: action.usersCount,
       };
     }
-    case SET_LOADER: {
+    case "SET_LOADER": {
       return {
         ...state,
         loader: action.loader,
       };
     }
+    case "BUTTON-DISABLED":
+      return {
+        ...state,
+        isButtonDisabled: action.disabled
+          ? [...state.isButtonDisabled, action.userId]
+          : state.isButtonDisabled.filter((id) => id !== action.userId),
+      };
     default:
       return state;
   }
@@ -97,16 +93,30 @@ type ActionsType =
   | ReturnType<typeof unFollow>
   | ReturnType<typeof setActualPage>
   | ReturnType<typeof setCountOfUsers>
-  | ReturnType<typeof setLoader>;
+  | ReturnType<typeof setLoader>
+  | ReturnType<typeof buttonDisabled>;
 
 export const setUsers = (users: UserT[]) =>
-  ({ type: SET_USERS, users } as const);
-export const follow = (userId: number) => ({ type: FOLLOW, userId } as const);
+  ({ type: "SET_USERS", users } as const);
+export const follow = (userId: number) => ({ type: "FOLLOW", userId } as const);
 export const unFollow = (userId: number) =>
-  ({ type: UNFOLLOW, userId } as const);
+  ({ type: "UNFOLLOW", userId } as const);
 export const setActualPage = (actualPage: number) =>
-  ({ type: SET_ACTUAL_PAGE, actualPage } as const);
+  ({ type: "SET_ACTUAL_PAGE", actualPage } as const);
 export const setCountOfUsers = (usersCount: number) =>
-  ({ type: SET_COUNT_OF_USERS, usersCount } as const);
+  ({ type: "SET_COUNT_OF_USERS", usersCount } as const);
 export const setLoader = (loader: boolean) =>
-  ({ type: SET_LOADER, loader } as const);
+  ({ type: "SET_LOADER", loader } as const);
+export const buttonDisabled = (disabled: boolean, userId: number) =>
+  ({ type: "BUTTON-DISABLED", disabled, userId } as const);
+
+export const requestUsers = (page: number, portionSize: number) => {
+  return async (dispatch: Dispatch<ActionsType>, getState: any) => {
+    dispatch(setLoader(true));
+    const response = await usersAPI.getUsers(page, portionSize);
+
+    dispatch(setLoader(false));
+    dispatch(setUsers(response.data.items));
+    dispatch(setCountOfUsers(response.data.totalCount));
+  };
+};

@@ -1,42 +1,26 @@
 import axios from "axios";
 import React from "react";
 import { connect } from "react-redux";
-import { AppStateType } from "../../redux/store";
-import ActionsCreators, {
+import { usersAPI } from "../../../api/api";
+import { AppStateType } from "../../../redux/store";
+import {
+  buttonDisabled,
   follow,
+  requestUsers,
   setActualPage,
   setCountOfUsers,
   setLoader,
   setUsers,
   unFollow,
   UserT,
-} from "../../redux/users-reducer";
+} from "../../../redux/users-reducer";
 import Users from "./Users";
 
-type UsersPropsType = {
-  users: UserT[];
-  countOfUseres: number;
-  actualPage: number;
-  portionSize: number;
-  loader: boolean;
-  setUsers: (users: UserT[]) => void;
-  setActualPage: (page: number) => void;
-  setCountOfUsers: (usersCount: number) => void;
-  setLoader: (loader: boolean) => void;
-  follow: (userId: number) => void;
-  unFollow: (userId: number) => void;
-};
-
-class UsersComponent extends React.Component<UsersPropsType> {
+class UsersContainer extends React.Component<PropsType> {
   componentDidMount() {
     this.props.setLoader(true);
-    axios
-      .get(
-        `https://social-network.samuraijs.com/api/1.0/users?page=${this.props.actualPage}&count=${this.props.portionSize}`,
-        {
-          withCredentials: true,
-        }
-      )
+    usersAPI
+      .getUsers(this.props.actualPage, this.props.portionSize)
       .then((response) => {
         this.props.setLoader(false);
         this.props.setUsers(response.data.items);
@@ -45,53 +29,28 @@ class UsersComponent extends React.Component<UsersPropsType> {
   }
 
   buttonFollow = (id: number) => {
-    axios
-      .post(
-        `https://social-network.samuraijs.com/api/1.0//follow/${id}`,
-        {},
-        {
-          withCredentials: true,
-          headers: {
-            "API-KEY": "a7566c79-aa05-48a1-9b2c-3618b68bf0c3",
-          },
-        }
-      )
-      .then((response) => {
-        if (response.data.resultCode === 0) {
-          this.props.follow(id);
-        }
-      });
+    usersAPI.follow(id).then((response) => {
+      if (response.data.resultCode === 0) {
+        this.props.follow(id);
+      }
+    });
   };
 
   buttonUnfollow = (id: number) => {
-    axios
-      .delete(`https://social-network.samuraijs.com/api/1.0//follow/${id}`, {
-        withCredentials: true,
-        headers: {
-          "API-KEY": "a7566c79-aa05-48a1-9b2c-3618b68bf0c3",
-        },
-      })
-      .then((response) => {
-        if (response.data.resultCode === 0) {
-          this.props.unFollow(id);
-        }
-      });
+    usersAPI.unFollow(id).then((response) => {
+      if (response.data.resultCode === 0) {
+        this.props.unFollow(id);
+      }
+    });
   };
 
-  setActualPageHandler = (p: number) => {
-    this.props.setActualPage(p);
+  setActualPageHandler = (page: number) => {
+    this.props.setActualPage(page);
     this.props.setLoader(true);
-    axios
-      .get(
-        `https://social-network.samuraijs.com/api/1.0/users?page=${p}&count=${this.props.portionSize}`,
-        {
-          withCredentials: true,
-        }
-      )
-      .then((response) => {
-        this.props.setLoader(false);
-        this.props.setUsers(response.data.items);
-      });
+    usersAPI.getUsers(page, this.props.portionSize).then((response) => {
+      this.props.setLoader(false);
+      this.props.setUsers(response.data.items);
+    });
   };
 
   render() {
@@ -103,6 +62,8 @@ class UsersComponent extends React.Component<UsersPropsType> {
         countOfUseres={this.props.countOfUseres}
         actualPage={this.props.actualPage}
         portionSize={this.props.portionSize}
+        isButtonDisabled={this.props.isButtonDisabled}
+        buttonDisabled={this.props.buttonDisabled}
       />
     );
   }
@@ -114,6 +75,7 @@ type MapStatePropsType = {
   actualPage: number;
   portionSize: number;
   loader: boolean;
+  isButtonDisabled: boolean;
 };
 
 type MapDispatchPropsType = {
@@ -123,6 +85,8 @@ type MapDispatchPropsType = {
   setLoader: (loader: boolean) => void;
   follow: (uesrId: number) => void;
   unFollow: (userId: number) => void;
+  buttonDisabled: (disabled: boolean, userId: number) => void;
+  requestUsers: (page: number, portionSize: number) => (dispatch: any, getState: any) => void
 };
 
 type OwnPropsType = {};
@@ -136,6 +100,7 @@ const mapStateToProps = (state: AppStateType): MapStatePropsType => {
     actualPage: state.usersPage.actualPage,
     portionSize: state.usersPage.portionSize,
     loader: state.usersPage.loader,
+    isButtonDisabled: state.usersPage.isButtonDisabled,
   };
 };
 
@@ -151,4 +116,6 @@ export default connect<
   setLoader,
   follow,
   unFollow,
-})(UsersComponent);
+  buttonDisabled,
+  requestUsers
+})(UsersContainer);

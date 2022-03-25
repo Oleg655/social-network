@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import userPhoto from "../../common/userphoto.png";
-import { UserT } from "../../redux/users-reducer";
+import { UserT } from "../../../redux/users-reducer";
 import Pagination from "../pagination/Pagination";
 import style from "../../common/Common.module.scss";
 
@@ -11,7 +11,7 @@ const Users = (props: any) => {
       {props.loader === true ? "loading" : null}
 
       <Pagination
-        actualPage={props.actualPage}
+        page={props.page}
         countOfUseres={props.countOfUseres}
         sizeOfPage={props.portionSize}
         setActualPageHandler={props.setActualPageHandler}
@@ -28,17 +28,21 @@ const Users = (props: any) => {
             <span>{i.name}</span>
             <div>
               {i.followed ? (
-                <button
+                <button disabled={props.isButtonDisabled.some((id: number) => id === i.id)}
                   onClick={() => {
+                    props.buttonDisabled(true, i.id)
                     props.buttonUnfollow(i.id);
+                    props.buttonDisabled(false, i.id)
                   }}
                 >
                   Unfollow
                 </button>
               ) : (
-                <button
+                <button disabled={props.isButtonDisabled.some((id: number) => id === i.id)}
                   onClick={() => {
+                    props.buttonDisabled(true, i.id)
                     props.buttonFollow(i.id);
+                    props.buttonDisabled(false, i.id)
                   }}
                 >
                   Follow

@@ -1,20 +1,18 @@
 import React, { ChangeEvent } from "react";
+import { PostType } from "../../../redux/profile-reducer";
 import Post from "./post/Post";
 
-export type PostType = {
-  message: string;
-  avatar: string;
-};
 
-type ProfilePostsPropsType = {
+type MyPostsPropsType = {
   message: string;
   posts: PostType[];
   updatePostMessage: (text: string) => void;
   addPost: () => void;
 };
 
-const ProfilePosts = (props: ProfilePostsPropsType) => {
-  const onPostChange = () => (e: ChangeEvent<HTMLTextAreaElement>) => {
+const MyPosts = (props: MyPostsPropsType) => {
+
+  const onPostChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const text = e.currentTarget.value;
     props.updatePostMessage(text);
   };
@@ -35,4 +33,4 @@ const ProfilePosts = (props: ProfilePostsPropsType) => {
   );
 };
 
-export default ProfilePosts;
+export default MyPosts;

@@ -1,21 +1,24 @@
-const AUTHORIZATION = "AUTHORIZATION";
+type initialStateType = {
+  id: number | null;
+  email: string | null;
+  login: string | null;
+  isAuth: boolean;
+};
 
-const initialState = {
+const initialState: initialStateType = {
   id: null,
   email: null,
   login: null,
-  auth: false,
+  isAuth: false,
 };
 
-const loginReducer = (action: any, state = initialState) => {
+const loginReducer = (action: ActionsType, state = initialState) => {
   switch (action.type) {
-    case AUTHORIZATION: {
+    case "AUTHORIZATION": {
       return {
         ...state,
-        id: action.id,
-        email: action.email,
-        login: action.logion,
-        auth: true,
+        ...action.data,
+        isAuth: true,
       };
     }
     default:
@@ -24,3 +27,9 @@ const loginReducer = (action: any, state = initialState) => {
 };
 
 export default loginReducer;
+
+type ActionsType = ReturnType<typeof authorization>;
+
+export const authorization = (id: number, email: string, login: string) => {
+  return { type: "AUTHORIZATION", data: { id, email, login } };
+};
