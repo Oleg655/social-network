@@ -1,5 +1,7 @@
 import { Dispatch } from "react";
+import { ThunkAction } from "redux-thunk";
 import { usersAPI } from "../api/api";
+import { AppStateType } from "./store";
 
 export type UserT = {
   id: number;
@@ -24,10 +26,7 @@ const initialState = {
   isButtonDisabled: [] as Array<number>,
 };
 
-const usersReducer = (
-  action: ActionsType,
-  state = initialState
-): initialStateType => {
+const usersReducer = (state = initialState, action: ActionsType,): initialStateType => {
   switch (action.type) {
     case "SET_USERS": {
       return {
@@ -38,7 +37,7 @@ const usersReducer = (
     case "SET_ACTUAL_PAGE": {
       return {
         ...state,
-        page: action.actualPage,
+        page: action.page,
       };
     }
     case "FOLLOW":
@@ -89,8 +88,8 @@ export default usersReducer;
 
 type ActionsType =
   | ReturnType<typeof setUsers>
-  | ReturnType<typeof follow>
-  | ReturnType<typeof unFollow>
+  | ReturnType<typeof followSuccess>
+  | ReturnType<typeof unFollowSuccess>
   | ReturnType<typeof setActualPage>
   | ReturnType<typeof setCountOfUsers>
   | ReturnType<typeof setLoader>
@@ -98,11 +97,12 @@ type ActionsType =
 
 export const setUsers = (users: UserT[]) =>
   ({ type: "SET_USERS", users } as const);
-export const follow = (userId: number) => ({ type: "FOLLOW", userId } as const);
-export const unFollow = (userId: number) =>
+export const followSuccess = (userId: number) =>
+  ({ type: "FOLLOW", userId } as const);
+export const unFollowSuccess = (userId: number) =>
   ({ type: "UNFOLLOW", userId } as const);
 export const setActualPage = (actualPage: number) =>
-  ({ type: "SET_ACTUAL_PAGE", actualPage } as const);
+  ({ type: "SET_ACTUAL_PAGE", page: actualPage } as const);
 export const setCountOfUsers = (usersCount: number) =>
   ({ type: "SET_COUNT_OF_USERS", usersCount } as const);
 export const setLoader = (loader: boolean) =>
@@ -110,13 +110,38 @@ export const setLoader = (loader: boolean) =>
 export const buttonDisabled = (disabled: boolean, userId: number) =>
   ({ type: "BUTTON-DISABLED", disabled, userId } as const);
 
-export const requestUsers = (page: number, portionSize: number) => {
-  return async (dispatch: Dispatch<ActionsType>, getState: any) => {
+export const requestUsers = (
+  page: number,
+  portionSize: number
+): ThunkAction<Promise<void>, AppStateType, unknown, ActionsType> => {
+  return async (dispatch, getState) => {
     dispatch(setLoader(true));
     const response = await usersAPI.getUsers(page, portionSize);
 
     dispatch(setLoader(false));
     dispatch(setUsers(response.data.items));
     dispatch(setCountOfUsers(response.data.totalCount));
+  };
+};
+
+export const requestFollow = (userId: number) => {
+  return async (dispatch: any, getState: any) => {
+    dispatch(buttonDisabled(true, userId));
+    const response = await usersAPI.follow(userId);
+    if (response.data.resultCode === 0) {
+      followSuccess(userId);
+    }
+    buttonDisabled(false, userId);
+  };
+};
+
+export const requestUnFollow = (userId: number) => {
+  return async (dispatch: Dispatch<ActionsType>, getState: any) => {
+    dispatch(buttonDisabled(true, userId));
+    const response = await usersAPI.follow(userId);
+    if (response.data.resultCode === 0) {
+      unFollowSuccess(userId);
+    }
+    buttonDisabled(false, userId);
   };
 };

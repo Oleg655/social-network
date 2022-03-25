@@ -20,7 +20,7 @@ class ProfileContainer extends React.Component<PropsType> {
 }
 
 type MapStatePropsType = {
-  profile: ProfileType;
+  profile: ProfileType | null;
 };
 
 type MapDispatchPropsType = {

@@ -5,14 +5,14 @@ import { AppStateType } from "../../../../redux/store";
 import ProfilePosts from "./MyPosts";
 
 type MapStatePropsType = {
-  message: string
+  newMessage: string
   posts: PostType[]
 };
 
 const mapStateToProps = (state: AppStateType): MapStatePropsType => {
   return {
-    message: state.profile.message,
-    posts: state.profile.posts,
+    newMessage: state.profilePage.newMessage,
+    posts: state.profilePage.posts,
   };
 };
 

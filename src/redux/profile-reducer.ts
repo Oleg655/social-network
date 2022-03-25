@@ -23,8 +23,8 @@ export type ProfileType = {
   photos: PhotosType;
 };
 export type PostType = {
-  message: string;
-  avatar: string;
+  postText: string;
+  avatar: string ;
 };
 
 type initialStateType = typeof initialState
@@ -36,14 +36,15 @@ const initialState = {
 };
 
 
-const profileReducer = (action: ActionsType, state = initialState): initialStateType => {
+const profileReducer = ( state = initialState, action: ActionsType): initialStateType => {
+
   switch (action.type) {
     case "ADD_POST": {
       return {
         ...state,
         posts: [
           ...state.posts,
-          { message: state.newMessage, avatar: ProfileAvatar },
+          { postText: state.newMessage, avatar: ProfileAvatar },
         ],
       };
     }

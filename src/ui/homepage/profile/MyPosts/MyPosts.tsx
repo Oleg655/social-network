@@ -1,10 +1,10 @@
 import React, { ChangeEvent } from "react";
-import { PostType } from "../../../redux/profile-reducer";
+import { PostType } from "../../../../redux/profile-reducer";
 import Post from "./post/Post";
 
 
 type MyPostsPropsType = {
-  message: string;
+  newMessage: string;
   posts: PostType[];
   updatePostMessage: (text: string) => void;
   addPost: () => void;
@@ -20,7 +20,7 @@ const MyPosts = (props: MyPostsPropsType) => {
   return (
     <>
       <div>
-        <textarea value={props.message} onChange={onPostChange}></textarea>
+        <textarea value={props.newMessage} onChange={onPostChange}></textarea>
         <button onClick={props.addPost}>Add post</button>
       </div>
 

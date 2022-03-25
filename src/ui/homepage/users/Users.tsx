@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import userPhoto from "../../common/userphoto.png";
+import userPhoto from "../../../common/userphoto.png";
 import { UserT } from "../../../redux/users-reducer";
 import Pagination from "../pagination/Pagination";
-import style from "../../common/Common.module.scss";
+import style from "../../../common/Common.module.scss";
 
 const Users = (props: any) => {
   return (
@@ -28,21 +28,23 @@ const Users = (props: any) => {
             <span>{i.name}</span>
             <div>
               {i.followed ? (
-                <button disabled={props.isButtonDisabled.some((id: number) => id === i.id)}
+                <button
+                  disabled={props.isButtonDisabled.some(
+                    (id: number) => id === i.id
+                  )}
                   onClick={() => {
-                    props.buttonDisabled(true, i.id)
                     props.buttonUnfollow(i.id);
-                    props.buttonDisabled(false, i.id)
                   }}
                 >
                   Unfollow
                 </button>
               ) : (
-                <button disabled={props.isButtonDisabled.some((id: number) => id === i.id)}
+                <button
+                  disabled={props.isButtonDisabled.some(
+                    (id: number) => id === i.id
+                  )}
                   onClick={() => {
-                    props.buttonDisabled(true, i.id)
                     props.buttonFollow(i.id);
-                    props.buttonDisabled(false, i.id)
                   }}
                 >
                   Follow

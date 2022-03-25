@@ -1,69 +1,53 @@
 import axios from "axios";
 import React from "react";
 import { connect } from "react-redux";
-import { usersAPI } from "../../../api/api";
+import { Dispatch } from "redux";
 import { AppStateType } from "../../../redux/store";
+
 import {
-  buttonDisabled,
-  follow,
+  requestFollow,
+  requestUnFollow,
   requestUsers,
   setActualPage,
-  setCountOfUsers,
-  setLoader,
-  setUsers,
-  unFollow,
   UserT,
 } from "../../../redux/users-reducer";
 import Users from "./Users";
 
 class UsersContainer extends React.Component<PropsType> {
   componentDidMount() {
-    this.props.setLoader(true);
-    usersAPI
-      .getUsers(this.props.actualPage, this.props.portionSize)
-      .then((response) => {
-        this.props.setLoader(false);
-        this.props.setUsers(response.data.items);
-        this.props.setCountOfUsers(response.data.totalCount);
-      });
+    this.props.requestUsers(this.props.page, this.props.portionSize);
   }
 
   buttonFollow = (id: number) => {
-    usersAPI.follow(id).then((response) => {
-      if (response.data.resultCode === 0) {
-        this.props.follow(id);
-      }
-    });
+    requestFollow(id);
   };
 
   buttonUnfollow = (id: number) => {
-    usersAPI.unFollow(id).then((response) => {
-      if (response.data.resultCode === 0) {
-        this.props.unFollow(id);
-      }
-    });
+    requestUnFollow(id);
   };
 
   setActualPageHandler = (page: number) => {
     this.props.setActualPage(page);
-    this.props.setLoader(true);
-    usersAPI.getUsers(page, this.props.portionSize).then((response) => {
-      this.props.setLoader(false);
-      this.props.setUsers(response.data.items);
-    });
+    this.props.requestUsers(page, this.props.portionSize);
+
+    // this.props.setLoader(true);
+    // usersAPI.getUsers(page, this.props.portionSize).then((response) => {
+    //   this.props.setLoader(false);
+    //   this.props.setUsers(response.data.items);
+    // });
   };
 
   render() {
     return (
       <Users
+        setActualPageHandler={this.setActualPageHandler}
         buttonFollow={this.buttonFollow}
         buttonUnfollow={this.buttonUnfollow}
         users={this.props.users}
         countOfUseres={this.props.countOfUseres}
-        actualPage={this.props.actualPage}
+        page={this.props.page}
         portionSize={this.props.portionSize}
         isButtonDisabled={this.props.isButtonDisabled}
-        buttonDisabled={this.props.buttonDisabled}
       />
     );
   }
@@ -72,21 +56,24 @@ class UsersContainer extends React.Component<PropsType> {
 type MapStatePropsType = {
   users: UserT[];
   countOfUseres: number;
-  actualPage: number;
+  page: number;
   portionSize: number;
   loader: boolean;
-  isButtonDisabled: boolean;
+  isButtonDisabled: Array<number>;
 };
 
 type MapDispatchPropsType = {
-  setUsers: (uesrs: UserT[]) => void;
   setActualPage: (page: number) => void;
-  setCountOfUsers: (usersCount: number) => void;
-  setLoader: (loader: boolean) => void;
-  follow: (uesrId: number) => void;
-  unFollow: (userId: number) => void;
-  buttonDisabled: (disabled: boolean, userId: number) => void;
-  requestUsers: (page: number, portionSize: number) => (dispatch: any, getState: any) => void
+  requestUsers: (
+    page: number,
+    portionSize: number
+  ) => void
+  requestFollow: (
+    userId: number
+  ) => void;
+  requestUnFollow: (
+    userId: number
+  ) => void;
 };
 
 type OwnPropsType = {};
@@ -97,12 +84,13 @@ const mapStateToProps = (state: AppStateType): MapStatePropsType => {
   return {
     users: state.usersPage.users,
     countOfUseres: state.usersPage.countOfUseres,
-    actualPage: state.usersPage.actualPage,
+    page: state.usersPage.page,
     portionSize: state.usersPage.portionSize,
     loader: state.usersPage.loader,
     isButtonDisabled: state.usersPage.isButtonDisabled,
   };
 };
+
 
 export default connect<
   MapStatePropsType,
@@ -110,12 +98,8 @@ export default connect<
   OwnPropsType,
   AppStateType
 >(mapStateToProps, {
-  setUsers,
   setActualPage,
-  setCountOfUsers,
-  setLoader,
-  follow,
-  unFollow,
-  buttonDisabled,
-  requestUsers
+  requestFollow,
+  requestUnFollow,
+  requestUsers,
 })(UsersContainer);

@@ -22,7 +22,7 @@ class HeaderContainer extends React.Component<PropsType> {
 
 type MapStatePropsType = {
   isAuth: boolean;
-  login: string;
+  login: string|null;
 };
 
 type MapDispatchPropsType = {

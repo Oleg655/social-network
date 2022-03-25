@@ -12,7 +12,7 @@ const initialState: initialStateType = {
   isAuth: false,
 };
 
-const loginReducer = (action: ActionsType, state = initialState) => {
+const loginReducer = ( state = initialState, action: ActionsType,) => {
   switch (action.type) {
     case "AUTHORIZATION": {
       return {

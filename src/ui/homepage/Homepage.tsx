@@ -5,8 +5,6 @@ import Messager from "./messager/Messager";
 import ProfileContainer from "./profile/ProfileContainer";
 import UsersContainer from "./users/UsersContainer";
 
-
-
 function Homepage() {
   const { id } = useParams<{id: string | undefined}>();
   return (
