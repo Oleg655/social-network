@@ -1,18 +1,17 @@
-type initialStateType = {
-  id: number | null;
-  email: string | null;
-  login: string | null;
-  isAuth: boolean;
-};
+import { ThunkAction } from "redux-thunk";
+import { authAPI } from "../api/api";
+import { AppStateType } from "./store";
 
-const initialState: initialStateType = {
-  id: null,
-  email: null,
-  login: null,
+type initialStateType = typeof initialState
+
+const initialState = {
+  id: null as number | null,
+  email: null as string | null,
+  login: null as string | null,
   isAuth: false,
 };
 
-const loginReducer = ( state = initialState, action: ActionsType,) => {
+const loginReducer = (state = initialState, action: ActionsType): initialStateType => {
   switch (action.type) {
     case "AUTHORIZATION": {
       return {
@@ -33,3 +32,12 @@ type ActionsType = ReturnType<typeof authorization>;
 export const authorization = (id: number, email: string, login: string) => {
   return { type: "AUTHORIZATION", data: { id, email, login } };
 };
+
+export const requestAuthMe = (): ThunkAction<Promise<void>, AppStateType, unknown, ActionsType> => {
+  return async (dispatch, getState) => {
+    const response = await authAPI.me()
+    const { id, email, login } = response.data.data;
+
+    dispatch(authorization(id, email, login))
+  }
+}

@@ -2,16 +2,11 @@ import { connect } from "react-redux";
 import React from "react";
 import Profile from "./Profile";
 import { AppStateType } from "../../../redux/store";
-import { ProfileType, setUserProfile } from "../../../redux/profile-reducer";
-import { usersAPI } from "../../../api/api";
-
+import { ProfileType, requestUserProfile } from "../../../redux/profile-reducer";
 
 class ProfileContainer extends React.Component<PropsType> {
   componentDidMount() {
-   usersAPI.getUserProfile(this.props.id)
-      .then((response: any) => {
-        this.props.setUserProfile(response.data);
-      });
+    this.props.requestUserProfile(this.props.id)
   }
 
   render() {
@@ -24,10 +19,10 @@ type MapStatePropsType = {
 };
 
 type MapDispatchPropsType = {
-  setUserProfile: (profile: ProfileType) => void;
+  requestUserProfile: (id: string | undefined) => void;
 };
 
-type OwnPropsType = {id: string | undefined};
+type OwnPropsType = { id?: string | undefined };
 
 type PropsType = MapStatePropsType & MapDispatchPropsType & OwnPropsType;
 
@@ -42,4 +37,4 @@ export default connect<
   MapDispatchPropsType,
   OwnPropsType,
   AppStateType
->(mapStateToProps, { setUserProfile })(ProfileContainer);
+>(mapStateToProps, { requestUserProfile })(ProfileContainer);

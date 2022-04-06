@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { addPost, PostType, updatePostMessage } from "../../../../redux/profile-reducer";
 import { AppStateType } from "../../../../redux/store";
-import ProfilePosts from "./MyPosts";
+import MyPosts from "./MyPosts";
 
 type MapStatePropsType = {
   newMessage: string
@@ -19,6 +19,6 @@ const mapStateToProps = (state: AppStateType): MapStatePropsType => {
 const MyPostsContainer = connect(mapStateToProps, {
   updatePostMessage,
   addPost,
-})(ProfilePosts);
+})(MyPosts);
 
 export default MyPostsContainer;

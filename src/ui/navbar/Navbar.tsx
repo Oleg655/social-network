@@ -15,7 +15,7 @@ function Navbar(props: NavbarPropsType) {
       <Link className={style.navbarLinks} to="/users">Users </Link>
       <Link className={style.navbarLinks} to="/music">My music </Link>
       <Link className={style.navbarLinks} to="/news">News </Link>
-      <Link className={style.navbarLinks} to="">Settings </Link>
+      <Link className={style.navbarLinks} to="/settings">Settings </Link>
       {props.isAuth ? props.login : <Link className={style.navbarLinks} to="/login">Login</Link>}
       
     </div>

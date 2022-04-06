@@ -124,8 +124,8 @@ export const requestUsers = (
   };
 };
 
-export const requestFollow = (userId: number) => {
-  return async (dispatch: any, getState: any) => {
+export const requestFollow = (userId: number): ThunkAction<Promise<void>, AppStateType, unknown, ActionsType> => {
+  return async (dispatch, getState) => {
     dispatch(buttonDisabled(true, userId));
     const response = await usersAPI.follow(userId);
     if (response.data.resultCode === 0) {
@@ -135,8 +135,8 @@ export const requestFollow = (userId: number) => {
   };
 };
 
-export const requestUnFollow = (userId: number) => {
-  return async (dispatch: Dispatch<ActionsType>, getState: any) => {
+export const requestUnFollow = (userId: number): ThunkAction<Promise<void>, AppStateType, unknown, ActionsType> => {
+  return async (dispatch, getStateny) => {
     dispatch(buttonDisabled(true, userId));
     const response = await usersAPI.follow(userId);
     if (response.data.resultCode === 0) {

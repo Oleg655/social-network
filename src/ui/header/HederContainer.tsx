@@ -1,18 +1,12 @@
 import { connect } from "react-redux";
 import React from "react";
-import { authorization } from "../../redux/login-reducer";
+import { requestAuthMe } from "../../redux/login-reducer";
 import { AppStateType } from "../../redux/store";
 import Header from "./Header";
-import { authAPI } from "../../api/api";
 
 class HeaderContainer extends React.Component<PropsType> {
   componentDidMount() {
-    authAPI.me()
-      .then((response) => {
-        const { id, email, login } = response.data.data;
-
-        this.props.authorization(id, email, login);
-      });
+    this.props.requestAuthMe()
   }
 
   render() {
@@ -22,11 +16,11 @@ class HeaderContainer extends React.Component<PropsType> {
 
 type MapStatePropsType = {
   isAuth: boolean;
-  login: string|null;
+  login: string | null;
 };
 
 type MapDispatchPropsType = {
-  authorization: (id: number, email: string, login: string) => void;
+  requestAuthMe: () => void;
 };
 
 type OwnPropsType = {};
@@ -40,4 +34,4 @@ const mapStateToProps = (state: AppStateType): MapStatePropsType => {
   };
 };
 
-export default connect(mapStateToProps, { authorization })(HeaderContainer);
+export default connect(mapStateToProps, { requestAuthMe })(HeaderContainer);

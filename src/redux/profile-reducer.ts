@@ -1,4 +1,7 @@
+import { ThunkAction } from "redux-thunk";
+import { usersAPI } from "../api/api";
 import ProfileAvatar from "../common/post-avatar.png";
+import { AppStateType } from "./store";
 
 type ContactsType = {
   github: string;
@@ -24,10 +27,10 @@ export type ProfileType = {
 };
 export type PostType = {
   postText: string;
-  avatar: string ;
+  avatar: string;
 };
 
-type initialStateType = typeof initialState
+type initialStateType = typeof initialState;
 
 const initialState = {
   posts: [] as PostType[] | [],
@@ -35,9 +38,10 @@ const initialState = {
   profile: null as ProfileType | null,
 };
 
-
-const profileReducer = ( state = initialState, action: ActionsType): initialStateType => {
-
+const profileReducer = (
+  state = initialState,
+  action: ActionsType
+): initialStateType => {
   switch (action.type) {
     case "ADD_POST": {
       return {
@@ -46,6 +50,7 @@ const profileReducer = ( state = initialState, action: ActionsType): initialStat
           ...state.posts,
           { postText: state.newMessage, avatar: ProfileAvatar },
         ],
+        newMessage: "",
       };
     }
     case "UPDATE_MESSAGE": {
@@ -81,4 +86,13 @@ export const addPost = () => {
 
 export const setUserProfile = (profile: ProfileType) => {
   return { type: "SET-USER-PROFILE", profile } as const;
+};
+
+export const requestUserProfile = (
+  userId: string | undefined
+): ThunkAction<Promise<void>, AppStateType, unknown, ActionsType> => {
+  return async (dispatch, getState) => {
+    const response = await usersAPI.getUserProfile(userId);
+    dispatch(setUserProfile(response.data));
+  };
 };
