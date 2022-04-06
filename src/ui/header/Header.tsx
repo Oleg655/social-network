@@ -1,7 +1,12 @@
 import Navbar from "../navbar/Navbar";
 import style from "./Header.module.scss";
 
-function Header(props: any) {
+type HeaderProps = {
+  isAuth: boolean
+  login: string | null
+}
+
+function Header(props: HeaderProps) {
   return (
     <div className={style.header}>
       <Navbar isAuth={props.isAuth} login={props.login} />

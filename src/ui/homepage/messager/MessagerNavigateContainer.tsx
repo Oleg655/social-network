@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import MessagerContainer from "./MessagerContainer";
 
-type MessagerProps = {
+type MessagerNavigateProps = {
     isAuth: boolean
 }
 
-function Messager(props: MessagerProps){
+function MessagerNavigateContainer(props: MessagerNavigateProps){
 
     const navigate = useNavigate()
 
@@ -15,9 +16,9 @@ function Messager(props: MessagerProps){
 
     return(
         <div>
-            Messages
+            <MessagerContainer/>
         </div>
     )
 }
 
-export default Messager;
+export default MessagerNavigateContainer;

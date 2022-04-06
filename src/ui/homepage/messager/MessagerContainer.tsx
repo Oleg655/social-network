@@ -5,7 +5,6 @@ import Messager from "./Messager";
 
 class MessagerContainer extends React.Component<PropsType> {
 
-
     render(){
        return <Messager isAuth={this.props.isAuth}/>
     }

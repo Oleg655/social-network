@@ -4,10 +4,12 @@ import style from "./Navbar.module.scss";
 
 type NavbarPropsType = {
   isAuth: boolean
-  login: string
+  login: string | null
 }
 
 function Navbar(props: NavbarPropsType) {
+
+  console.log(props.isAuth)
   return (
     <div className={style.navbar}>
       <Link className={style.navbarLinks} to="/profile">My profile </Link>
@@ -17,6 +19,7 @@ function Navbar(props: NavbarPropsType) {
       <Link className={style.navbarLinks} to="/news">News </Link>
       <Link className={style.navbarLinks} to="/settings">Settings </Link>
       {props.isAuth ? props.login : <Link className={style.navbarLinks} to="/login">Login</Link>}
+
       
     </div>
   );
