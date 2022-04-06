@@ -1,6 +1,13 @@
 import React from "react";
 
-function Messager(){
+type MessagerProps = {
+    isAuth: boolean
+}
+
+function Messager(props: MessagerProps){
+
+    //if(props.isAuth === false)
+
     return(
         <div>
             Messages

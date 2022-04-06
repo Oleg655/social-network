@@ -1,13 +1,13 @@
 import React from "react";
 import logo from "./logo.svg";
 import style from "./App.module.scss";
-import Header from "./ui/header/Header";
 import Homepage from "./ui/homepage/Homepage";
+import HederContainer from "./ui/header/HederContainer";
 
 function App() {
   return (
     <>
-      <Header />
+      <HederContainer/>
       <Homepage />
     </>
   );
