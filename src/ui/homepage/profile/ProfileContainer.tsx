@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import React from "react";
+import React, { ComponentType } from "react";
 import Profile from "./Profile";
 import { AppStateType } from "../../../redux/store";
 import {
@@ -8,6 +8,7 @@ import {
 } from "../../../redux/profile-reducer";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import {RedirectHOC} from '../common/RedirectHOC'
+import { compose } from "redux";
 
 type PathParamsType = {
   id: string;
@@ -45,10 +46,18 @@ const mapStateToProps = (state: AppStateType): MapStatePropsType => {
     profile: state.profilePage.profile,
   };
 };
-const withRouterComponent = withRouter(ProfileContainer);
-export default RedirectHOC(connect<
+//const withRouterComponent = withRouter(ProfileContainer);
+
+// export const RedirectHOC(withRouter(connect<
+//   MapStatePropsType,
+//   MapDispatchPropsType,
+//   OwnPropsType,
+//   AppStateType
+// >(mapStateToProps, { requestUserProfile: requestProfile })(ProfileContainer)));
+
+export default compose<ComponentType>(connect<
   MapStatePropsType,
   MapDispatchPropsType,
   OwnPropsType,
   AppStateType
->(mapStateToProps, { requestUserProfile: requestProfile })(withRouterComponent));
+>(mapStateToProps, { requestUserProfile: requestProfile }),withRouter,RedirectHOC)(ProfileContainer)
