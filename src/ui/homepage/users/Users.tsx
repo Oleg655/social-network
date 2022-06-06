@@ -1,11 +1,23 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import {  NavLink } from "react-router-dom";
 import userPhoto from "../../../common/userphoto.png";
 import { UserT } from "../../../redux/users-reducer";
 import Pagination from "../pagination/Pagination";
 import style from "../../../common/Common.module.scss";
 
-const Users = (props: any) => {
+type Users = {
+  setActualPageHandler: (page: number) => void;
+  buttonFollow: (id: number) => void;
+  buttonUnfollow: (id: number) => void;
+  users: UserT[];
+  countOfUseres: number;
+  page: number;
+  portionSize: number;
+  isButtonDisabled: number[];
+  loader: boolean;
+};
+
+const Users = (props: Users) => {
   return (
     <div>
       {props.loader === true ? "loading" : null}
@@ -19,12 +31,12 @@ const Users = (props: any) => {
       <div>
         {props.users.map((i: UserT) => (
           <div key={i.id}>
-            <Link to={"/profile/" + i.id}>
+            <NavLink to={"/profile/" + i.id}>
               <img
                 className={style.userPhoto}
                 src={i.photos.small != null ? i.photos.small : userPhoto}
               />
-            </Link>
+            </NavLink>
             <span>{i.name}</span>
             <div>
               {i.followed ? (

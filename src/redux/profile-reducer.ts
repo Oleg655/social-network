@@ -88,11 +88,11 @@ export const setUserProfile = (profile: ProfileType) => {
   return { type: "SET-USER-PROFILE", profile } as const;
 };
 
-export const requestUserProfile = (
+export const requestProfile = (
   userId: string | undefined
 ): ThunkAction<Promise<void>, AppStateType, unknown, ActionsType> => {
   return async (dispatch, getState) => {
-    const response = await usersAPI.getUserProfile(userId);
+    const response = await usersAPI.getProfile(userId);
     dispatch(setUserProfile(response.data));
   };
 };

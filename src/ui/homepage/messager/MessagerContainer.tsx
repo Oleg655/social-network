@@ -2,6 +2,7 @@ import { connect } from "react-redux";
 import React from "react";
 import { AppStateType } from "../../../redux/store";
 import Messager from "./Messager";
+import { RedirectHOC } from "../common/RedirectHOC";
 
 class MessagerContainer extends React.Component<PropsType> {
 
@@ -27,4 +28,4 @@ const mapStateToProps = (state: AppStateType): MapStatePropsType => {
     };
   };
 
-export default connect(mapStateToProps, {})(MessagerContainer)
+export default RedirectHOC(connect(mapStateToProps, {})(MessagerContainer))

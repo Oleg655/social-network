@@ -1,4 +1,3 @@
-import { Dispatch } from "react";
 import { ThunkAction } from "redux-thunk";
 import { usersAPI } from "../api/api";
 import { AppStateType } from "./store";
@@ -26,7 +25,10 @@ const initialState = {
   isButtonDisabled: [] as Array<number>,
 };
 
-const usersReducer = (state = initialState, action: ActionsType,): initialStateType => {
+const usersReducer = (
+  state = initialState,
+  action: ActionsType
+): initialStateType => {
   switch (action.type) {
     case "SET_USERS": {
       return {
@@ -124,24 +126,28 @@ export const requestUsers = (
   };
 };
 
-export const requestFollow = (userId: number): ThunkAction<Promise<void>, AppStateType, unknown, ActionsType> => {
+export const requestFollow = (
+  userId: number
+): ThunkAction<Promise<void>, AppStateType, unknown, ActionsType> => {
   return async (dispatch, getState) => {
     dispatch(buttonDisabled(true, userId));
     const response = await usersAPI.follow(userId);
     if (response.data.resultCode === 0) {
-      followSuccess(userId);
+      dispatch(followSuccess(userId));
     }
-    buttonDisabled(false, userId);
+    dispatch(buttonDisabled(false, userId));
   };
 };
 
-export const requestUnFollow = (userId: number): ThunkAction<Promise<void>, AppStateType, unknown, ActionsType> => {
+export const requestUnFollow = (
+  userId: number
+): ThunkAction<Promise<void>, AppStateType, unknown, ActionsType> => {
   return async (dispatch, getStateny) => {
     dispatch(buttonDisabled(true, userId));
-    const response = await usersAPI.follow(userId);
+    const response = await usersAPI.unFollow(userId);
     if (response.data.resultCode === 0) {
-      unFollowSuccess(userId);
+      dispatch(unFollowSuccess(userId));
     }
-    buttonDisabled(false, userId);
+    dispatch(buttonDisabled(false, userId));
   };
 };

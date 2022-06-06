@@ -2,6 +2,7 @@ import React from "react";
 import MyPostsContainer from "./MyPosts/MyPostsContainer";
 
 function Profile(props: any) {
+  
   return (
     <>
       <div>

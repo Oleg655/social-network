@@ -1,23 +1,14 @@
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React from "react";
+import { Redirect } from "react-router-dom";
 
 type MessagerProps = {
-    isAuth: boolean
-}
+  isAuth: boolean;
+};
 
-function Messager(props: MessagerProps){
+function Messager(props: MessagerProps) {
+  if (props.isAuth === false) return <Redirect to="/login" />;
 
-    const navigate = useNavigate()
-
-    useEffect(() => {
-        if (props.isAuth === false) navigate('/login')
-    }, [])
-
-    return(
-        <div>
-            Messages
-        </div>
-    )
+  return <div>Messages</div>;
 }
 
 export default Messager;

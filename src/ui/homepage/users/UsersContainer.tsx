@@ -1,7 +1,6 @@
 import axios from "axios";
 import React from "react";
 import { connect } from "react-redux";
-import { Dispatch } from "redux";
 import { AppStateType } from "../../../redux/store";
 
 import {
@@ -19,11 +18,11 @@ class UsersContainer extends React.Component<PropsType> {
   }
 
   buttonFollow = (id: number) => {
-    requestFollow(id);
+    this.props.requestFollow(id);
   };
 
   buttonUnfollow = (id: number) => {
-    requestUnFollow(id);
+    this.props.requestUnFollow(id);
   };
 
   setActualPageHandler = (page: number) => {
@@ -48,6 +47,7 @@ class UsersContainer extends React.Component<PropsType> {
         page={this.props.page}
         portionSize={this.props.portionSize}
         isButtonDisabled={this.props.isButtonDisabled}
+        loader={this.props.loader}
       />
     );
   }
@@ -64,16 +64,9 @@ type MapStatePropsType = {
 
 type MapDispatchPropsType = {
   setActualPage: (page: number) => void;
-  requestUsers: (
-    page: number,
-    portionSize: number
-  ) => void
-  requestFollow: (
-    userId: number
-  ) => void;
-  requestUnFollow: (
-    userId: number
-  ) => void;
+  requestUsers: (page: number, portionSize: number) => void;
+  requestFollow: (userId: number) => void;
+  requestUnFollow: (userId: number) => void;
 };
 
 type OwnPropsType = {};
@@ -90,7 +83,6 @@ const mapStateToProps = (state: AppStateType): MapStatePropsType => {
     isButtonDisabled: state.usersPage.isButtonDisabled,
   };
 };
-
 
 export default connect<
   MapStatePropsType,

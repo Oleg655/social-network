@@ -1,7 +1,7 @@
 import React, { ChangeEvent } from "react";
 import { PostType } from "../../../../redux/profile-reducer";
 import Post from "./post/Post";
-
+import styles from "./MyPosts.module.scss";
 
 type MyPostsPropsType = {
   newMessage: string;
@@ -11,7 +11,6 @@ type MyPostsPropsType = {
 };
 
 const MyPosts = (props: MyPostsPropsType) => {
-
   const onPostChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const text = e.currentTarget.value;
     props.updatePostMessage(text);
@@ -21,7 +20,13 @@ const MyPosts = (props: MyPostsPropsType) => {
     <>
       <div>
         <textarea value={props.newMessage} onChange={onPostChange}></textarea>
-        <button onClick={props.addPost}>Add post</button>
+        <button className={styles.button} onClick={props.addPost}>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          Add post
+        </button>
       </div>
 
       <div>
